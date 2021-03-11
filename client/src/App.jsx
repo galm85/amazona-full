@@ -9,6 +9,7 @@ import { signout } from './redux/actions/userActions';
 import RegisterScreen from './screens/registerScreen';
 import shippingAddressScreen from './screens/shippingAddressScreen';
 import PaymentMethodScreen from './screens/paymentMethodScreen';
+import PlaceOrderScreen from './screens/placeOrderScreen';
 
 
 function App() {
@@ -60,6 +61,7 @@ function App() {
               <Route path="/register" component={RegisterScreen}  />
               <Route path="/shipping" component={shippingAddressScreen}  />
               <Route path="/payment" component={PaymentMethodScreen}  />
+              <Route path="/place-order" component={PlaceOrderScreen}  />
               
             </main>
         

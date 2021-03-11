@@ -8,6 +8,7 @@ require('dotenv').config();
 //import routers
 const userRouter = require('./routes/userRoute');
 const productRouter = require('./routes/productRoute');
+const orderRouter = require('./routes/orderRoute');
 
 mongoose.connect(process.env.MONGODB_URL || 'mongodb://localhost:27017/amazona',{
     useNewUrlParser:true,
@@ -22,6 +23,7 @@ app.use(cors());
 
 app.use('/api/products',productRouter);
 app.use('/api/users',userRouter);
+app.use('/api/orders',orderRouter);
 
 
 

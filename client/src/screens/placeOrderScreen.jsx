@@ -1,7 +1,12 @@
-import React from 'react'
+import React,{useEffect} from 'react'
 import CheckoutSteps from '../components/checkoutSteps';
-import {useSelector} from 'react-redux';
+import {useSelector,useDispatch} from 'react-redux';
 import {Link} from 'react-router-dom';
+import { createOrder } from "../redux/actions/orderActions";
+import { ORDER_CREATE_RESET } from '../redux/constants/orderConstance';
+import LoadingBox from '../components/loadingBox';
+import MessageBox from '../components/messageBox';
+
 
 const PlaceOrderScreen = (props) => {
 
@@ -11,6 +16,12 @@ const PlaceOrderScreen = (props) => {
     }
     const {shippingAddress} = cart;
 
+    const orderCreate = useSelector(state=>state.orderCreate);
+    const {loading,error,success,order} = orderCreate;
+
+
+
+
     const toPrice = num => Number(num.toFixed(2));
 
     cart.itemsPrice = toPrice(cart.cartItems.reduce((a,c)=>a+c.qty * c.price,0));
@@ -18,10 +29,19 @@ const PlaceOrderScreen = (props) => {
     cart.taxPrice = toPrice(0.15 * cart.itemsPrice);
     cart.totalPrice = cart.itemsPrice + cart.shippingPrice + cart.taxPrice;
 
+    const dispatch = useDispatch()
 
     const handlePlaceOrder = e=>{
-
+        dispatch(createOrder({...cart,orderItems:cart.cartItems}));
     }
+
+
+    useEffect(()=>{
+        if(success){
+            props.history.push(`/order/${order._id}`);
+            dispatch({type:ORDER_CREATE_RESET});
+        }
+    },[dispatch,order,props.history,success])
 
     return (  
         <div>
@@ -108,6 +128,8 @@ const PlaceOrderScreen = (props) => {
                             <li>
                                 <button type="button" className="primary block" onClick={handlePlaceOrder} disabled={cart.cartItems.length===0}>Place Order</button>
                             </li>
+                            {loading && <LoadingBox></LoadingBox>}
+                            {error && <MessageBox variant="danger">{error}</MessageBox>}
                         </ul>
                     </div>
                 </div>

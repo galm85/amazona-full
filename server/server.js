@@ -2,8 +2,10 @@ const express = require('express');
 const app = express();
 const cors = require('cors');
 const mongoose = require('mongoose');
+require('dotenv').config();
 
-//routes
+
+//import routers
 const userRouter = require('./routes/userRoute');
 const productRouter = require('./routes/productRoute');
 
@@ -16,6 +18,8 @@ mongoose.connect(process.env.MONGODB_URL || 'mongodb://localhost:27017/amazona',
 
 app.use(express.json());
 app.use(cors()); 
+
+
 app.use('/api/products',productRouter);
 app.use('/api/users',userRouter);
 
